@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Detalhada de Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000D3C;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f7f9;
+            --form-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #dfe6e9;
+            --pill-bg: #ecf0f1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .page-header {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #000D3C;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 30px rgba(3, 25, 122, 0.2);
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+        
+        .header-title-container {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .header-title-container h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--light-text-color);
+            font-weight: 500;
+        }
+
+        #dashboard-title-display {
+            font-size: 25px;
+        }
+        
+        .survey-container {
+            background-color: var(--form-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 700px;
+            overflow: hidden;
+        }
+
+        #dashboard-survey {
+            position: relative;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .progress-bar { width: 100%; background-color: #ecf0f1; border-radius: 5px; height: 10px; margin-bottom: 25px; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: var(--primary-color); border-radius: 5px; transition: width 0.4s ease-in-out; }
+
+        .form-step { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .form-step.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-step h2 { font-size: 22px; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 12px; color: #34495e; }
+        .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; min-height: 80px; resize: vertical; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 13, 60, 0.1); }
+        
+        .nps-scale { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+        .nps-scale input[type="radio"] { display: none; }
+        .nps-scale label { display: flex; justify-content: center; align-items: center; width: 45px; height: 45px; border: 1px solid #bdc3c7; border-radius: 50%; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .nps-scale label:hover { background-color: #ecf0f1; border-color: var(--primary-color); }
+        
+        .nps-scale input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+        
+        .pills-wrapper {
+            /* Wrapper agora fica sempre visível para conter os placeholders */
+            margin-top: 10px;
+        }
+
+        .adjective-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-bottom: 20px; }
+        .pill { background-color: var(--pill-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s ease-in-out; }
+        .pill:hover { border-color: var(--primary-color); }
+        .pill.active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        
+        /* --- NOVO: Estilo para os placeholders das pills --- */
+        .pill-placeholder {
+            color: transparent; /* Torna o texto invisível */
+            background-color: #f4f7f9;
+            border-color: #e9eef2;
+            cursor: default;
+            user-select: none; /* Impede que o texto invisível seja selecionado */
+        }
+        .pill-placeholder:hover {
+            border-color: #e9eef2; /* Sobrescreve o hover para não fazer nada */
+        }
+        
+        .navigation-buttons { display: flex; margin-top: auto; padding-top: 20px; }
+        .btn-next, .btn-submit { margin-left: auto; }
+
+        .btn { background-color: var(--primary-color); color: #ffffff; border: none; border-radius: 8px; padding: 12px 25px; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background-color 0.3s, transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-prev { background-color: #bdc3c7; }
+        .btn-prev:hover { background-color: #95a5a6; }
+        .btn-submit { background-color: var(--secondary-color); }
+        .btn-submit:hover { background-color: #27ae60; }
+        
+        #thank-you-message { text-align: center; }
+        
+        .thank-you-image { max-width: 200px; margin: 20px auto; display: block; }
+        #thank-you-message h2 { color: var(--primary-color); font-size: 28px; }
+
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <img src="/imagem/logo_azul.svg" alt="Logo da Empresa" class="logo">
+        <div class="header-title-container">
+            <h3>Painel em Avaliação</h3>
+            <h1 id="dashboard-title-display">Carregando...</h1>
+        </div>
+    </header>
+
+    <div class="survey-container">
+        <form id="dashboard-survey">
+            <input type="hidden" id="dashboard-name-hidden" name="dashboard_name">
+            <input type="hidden" id="squad-name-hidden" name="squad_name">
+            <input type="hidden" id="rt-name-hidden" name="rt_name">
+
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        
+            <div class="form-step active" data-step="0">
+                <h2>1. Usabilidade e Efetividade</h2>
+                <div class="form-group">
+                    <label>Em uma escala de 0 a 5, quão fácil e eficaz você considera o uso do dashboard?</label>
+                    <div class="nps-scale">
+                        <input type="radio" id="nps-usability-0" name="nps_usability" value="0" required><label for="nps-usability-0">0</label>
+                        <input type="radio" id="nps-usability-1" name="nps_usability" value="1"><label for="nps-usability-1">1</label>
+                        <input type="radio" id="nps-usability-2" name="nps_usability" value="2"><label for="nps-usability-2">2</label>
+                        <input type="radio" id="nps-usability-3" name="nps_usability" value="3"><label for="nps-usability-3">3</label>
+                        <input type="radio" id="nps-usability-4" name="nps_usability" value="4"><label for="nps-usability-4">4</label>
+                        <input type="radio" id="nps-usability-5" name="nps_usability" value="5"><label for="nps-usability-5">5</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Quais palavras descrevem sua experiência? (opcional)</label>
+                    <div class="pills-wrapper">
+                        <div class="adjective-pills">
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments-usability">Comentários (opcional)</label>
+                    <textarea id="comments-usability" name="comments_usability" placeholder="Nos conte um pouco mais..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="1">
+                <h2>2. Qualidade e Relevância dos Dados</h2>
+                <div class="form-group">
+                     <label>Em uma escala de 0 a 5, qual o seu nível de confiança nos dados?</label>
+                     <div class="nps-scale">
+                        <input type="radio" id="nps-data-0" name="nps_data" value="0" required><label for="nps-data-0">0</label>
+                        <input type="radio" id="nps-data-1" name="nps_data" value="1"><label for="nps-data-1">1</label>
+                        <input type="radio" id="nps-data-2" name="nps_data" value="2"><label for="nps-data-2">2</label>
+                        <input type="radio" id="nps-data-3" name="nps_data" value="3"><label for="nps-data-3">3</label>
+                        <input type="radio" id="nps-data-4" name="nps_data" value="4"><label for="nps-data-4">4</label>
+                        <input type="radio" id="nps-data-5" name="nps_data" value="5"><label for="nps-data-5">5</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Quais palavras descrevem os dados apresentados? (opcional)</label>
+                    <div class="pills-wrapper">
+                        <div class="adjective-pills">
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments-data">Comentários (opcional)</label>
+                    <textarea id="comments-data" name="comments_data" placeholder="Senti falta de algum KPI, os números parecem corretos..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="2">
+                <h2>3. Design e Clareza Visual</h2>
+                 <div class="form-group">
+                    <label>Em uma escala de 0 a 5, como você avalia a organização visual do dashboard?</label>
+                    <div class="nps-scale">
+                        <input type="radio" id="nps-design-0" name="nps_design" value="0" required><label for="nps-design-0">0</label>
+                        <input type="radio" id="nps-design-1" name="nps_design" value="1"><label for="nps-design-1">1</label>
+                        <input type="radio" id="nps-design-2" name="nps_design" value="2"><label for="nps-design-2">2</label>
+                        <input type="radio" id="nps-design-3" name="nps_design" value="3"><label for="nps-design-3">3</label>
+                        <input type="radio" id="nps-design-4" name="nps_design" value="4"><label for="nps-design-4">4</label>
+                        <input type="radio" id="nps-design-5" name="nps_design" value="5"><label for="nps-design-5">5</label>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label>Quais palavras descrevem o design? (opcional)</label>
+                    <div class="pills-wrapper">
+                        <div class="adjective-pills">
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments-design">Comentários (opcional)</label>
+                    <textarea id="comments-design" name="comments_design" placeholder="As cores ajudam a entender, há muita informação na tela..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="3">
+                <h2>4. Funcionalidade e Performance</h2>
+                <div class="form-group">
+                    <label>Em uma escala de 0 a 5, quão satisfeito você está com a performance geral?</label>
+                    <div class="nps-scale">
+                        <input type="radio" id="nps-perf-0" name="nps_perf" value="0" required><label for="nps-perf-0">0</label>
+                        <input type="radio" id="nps-perf-1" name="nps_perf" value="1"><label for="nps-perf-1">1</label>
+                        <input type="radio" id="nps-perf-2" name="nps_perf" value="2"><label for="nps-perf-2">2</label>
+                        <input type="radio" id="nps-perf-3" name="nps_perf" value="3"><label for="nps-perf-3">3</label>
+                        <input type="radio" id="nps-perf-4" name="nps_perf" value="4"><label for="nps-perf-4">4</label>
+                        <input type="radio" id="nps-perf-5" name="nps_perf" value="5"><label for="nps-perf-5">5</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Quais palavras descrevem a performance? (opcional)</label>
+                    <div class="pills-wrapper">
+                        <div class="adjective-pills">
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments-perf">Comentários (opcional)</label>
+                    <textarea id="comments-perf" name="comments_perf" placeholder="Os filtros carregam rápido, a página travou uma vez..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="4">
+                <h2>5. Impacto no Negócio</h2>
+                <div class="form-group">
+                    <label>Em uma escala de 0 a 5, o quanto o dashboard impacta suas decisões?</label>
+                    <div class="nps-scale">
+                        <input type="radio" id="nps-impact-0" name="nps_impact" value="0" required><label for="nps-impact-0">0</label>
+                        <input type="radio" id="nps-impact-1" name="nps_impact" value="1"><label for="nps-impact-1">1</label>
+                        <input type="radio" id="nps-impact-2" name="nps_impact" value="2"><label for="nps-impact-2">2</label>
+                        <input type="radio" id="nps-impact-3" name="nps_impact" value="3"><label for="nps-impact-3">3</label>
+                        <input type="radio" id="nps-impact-4" name="nps_impact" value="4"><label for="nps-impact-4">4</label>
+                        <input type="radio" id="nps-impact-5" name="nps_impact" value="5"><label for="nps-impact-5">5</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Quais palavras descrevem o impacto do dashboard? (opcional)</label>
+                    <div class="pills-wrapper">
+                        <div class="adjective-pills">
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                            <div class="pill pill-placeholder">Adjetivo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments-impact">Comentários (opcional)</label>
+                    <textarea id="comments-impact" name="comments_impact" placeholder="Consigo tomar decisões com mais segurança agora..."></textarea>
+                </div>
+            </div>
+            
+            <div class="form-step" id="thank-you-message">
+                <img src="/imagem/Final_forms.svg" alt="Formulário Concluído" class="thank-you-image">
+                <h2>Obrigado!</h2>
+                <p>Seu feedback foi recebido e é muito importante para nós.</p>
+            </div>
+
+            <div class="navigation-buttons">
+                <button type="button" class="btn btn-prev" id="prev-btn" style="display: none;">Voltar</button>
+                <button type="button" class="btn btn-next" id="next-btn">Próximo</button>
+                <button type="submit" class="btn btn-submit" id="submit-btn" style="display: none;">Enviar Avaliação</button>
+            </div>
+        </form>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const adjectiveMap = {
+        usabilidade_e_efetividade: {
+            positive: ['Intuitivo', 'Rápido', 'Completo', 'Simples', 'Direto'],
+            negative: ['Confuso', 'Lento', 'Complicado', 'Frustrante', 'Burocrático']
+        },
+        qualidade_e_relevância_dos_dados: {
+            positive: ['Confiável', 'Preciso', 'Relevante', 'Atualizado', 'Acurado'],
+            negative: ['Incorreto', 'Desatualizado', 'Incompleto', 'Duvidoso', 'Inconsistente']
+        },
+        design_e_clareza_visual: {
+            positive: ['Agradável', 'Limpo', 'Organizado', 'Moderno', 'Claro'],
+            negative: ['Poluído', 'Confuso', 'Desorganizado', 'Cansativo', 'Ultrapassado']
+        },
+        funcionalidade_e_performance: {
+            positive: ['Rápido', 'Estável', 'Responsivo', 'Fluido', 'Eficiente'],
+            negative: ['Lento', 'Instável', 'Com Bugs', 'Travado', 'Frágil']
+        },
+        impacto_no_negócio: {
+            positive: ['Esclarecedor', 'Essencial', 'Impactante', 'Estratégico', 'Valioso'],
+            negative: ['Superficial', 'Irrelevante', 'Limitado', 'Básico', 'Desnecessário']
+        }
+    };
+    
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const form = document.getElementById('dashboard-survey');
+    const progressFill = document.getElementById('progress-fill');
+    const allNpsRadios = document.querySelectorAll('.nps-scale input[type="radio"]');
+    
+    const dashboardTitleDisplay = document.getElementById('dashboard-title-display');
+    const dashboardNameHiddenInput = document.getElementById('dashboard-name-hidden');
+    const squadNameHiddenInput = document.getElementById('squad-name-hidden');
+    const rtNameHiddenInput = document.getElementById('rt-name-hidden');
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const dashboardNameFromURL = urlParams.get('painel');
+    const finalDashboardName = dashboardNameFromURL ? decodeURIComponent(dashboardNameFromURL) : "Dashboard Padrão";
+    dashboardTitleDisplay.textContent = finalDashboardName;
+    dashboardNameHiddenInput.value = finalDashboardName;
+
+    const squadNameFromURL = urlParams.get('squad');
+    const finalSquadName = squadNameFromURL ? decodeURIComponent(squadNameFromURL) : "Squad Não Informada";
+    squadNameHiddenInput.value = finalSquadName;
+    
+    const rtNameFromURL = urlParams.get('rt');
+    const finalRtName = rtNameFromURL ? decodeURIComponent(rtNameFromURL) : "RT Não Informado";
+    rtNameHiddenInput.value = finalRtName;
+
+    let currentStep = 0;
+    const totalVisibleSteps = steps.length - 1;
+
+    const handleNpsSelection = (event) => {
+        const selectedRadio = event.target;
+        const score = parseInt(selectedRadio.value);
+        const currentStepElement = selectedRadio.closest('.form-step');
+        const pillsContainer = currentStepElement.querySelector('.adjective-pills');
+
+        pillsContainer.innerHTML = '';
+
+        const categoryTitle = currentStepElement.querySelector('h2').textContent.split('. ')[1].replace(/\s+/g, '_').toLowerCase();
+        const adjectivesForCategory = adjectiveMap[categoryTitle];
+        
+        let adjectivesToShow = [];
+
+        if (score <= 2) {
+            adjectivesToShow = adjectivesForCategory.negative;
+        } else if (score === 3) {
+            adjectivesToShow = [...adjectivesForCategory.negative, ...adjectivesForCategory.positive];
+        } else {
+            adjectivesToShow = adjectivesForCategory.positive;
+        }
+        
+        pillsContainer.style.opacity = 0;
+        
+        adjectivesToShow.forEach(adj => {
+            const pill = document.createElement('div');
+            pill.className = 'pill';
+            pill.textContent = adj;
+            pill.addEventListener('click', () => {
+                pill.classList.toggle('active');
+            });
+            pillsContainer.appendChild(pill);
+        });
+
+        void pillsContainer.offsetWidth; 
+        pillsContainer.style.opacity = 1;
+    };
+
+    allNpsRadios.forEach(radio => {
+        radio.addEventListener('change', handleNpsSelection);
+    });
+
+    const updateFormSteps = () => {
+        steps.forEach(step => step.classList.remove('active'));
+        steps[currentStep].classList.add('active');
+        
+        const progressPercent = (currentStep / (totalVisibleSteps - 1)) * 100;
+        progressFill.style.width = `${progressPercent}%`;
+
+        prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+        nextBtn.style.display = currentStep === totalVisibleSteps - 1 ? 'none' : 'inline-block';
+        submitBtn.style.display = currentStep === totalVisibleSteps - 1 ? 'inline-block' : 'none';
+    };
+    
+    const validateStep = () => {
+        const currentStepElement = steps[currentStep];
+        const requiredRadio = currentStepElement.querySelector('input[type="radio"][required]');
+        if (requiredRadio) {
+            const groupName = requiredRadio.name;
+            const selectedOption = currentStepElement.querySelector(`input[name="${groupName}"]:checked`);
+            if (!selectedOption) {
+                alert('Por favor, selecione uma nota para continuar.');
+                return false;
+            }
+        }
+        return true;
+    };
+
+    nextBtn.addEventListener('click', () => {
+        if (validateStep() && currentStep < totalVisibleSteps - 1) {
+            currentStep++;
+            updateFormSteps();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            updateFormSteps();
+        }
+    });
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!validateStep()) return;
+        
+        // **PASSO 1: URL da API Gateway**
+        const apiUrl = 'https://osjimi01h9.execute-api.us-east-2.amazonaws.com/prod/avaliacao';
+
+        // **PASSO 2: Coletar e Estruturar os dados**
+        const formData = new FormData(form);
+        const evaluationData = {
+            dashboardName: formData.get('dashboard_name'),
+            squadName: formData.get('squad_name'),
+            rtName: formData.get('rt_name'),
+            ratings: {},
+            comments: {},
+            adjectives: {}
+        };
+
+        steps.forEach((step, index) => {
+            if (index < totalVisibleSteps - 1) { 
+                const categoryName = step.querySelector('h2').textContent.split('. ')[1].replace(/\s+/g, '_').toLowerCase();
+                const radioName = step.querySelector('input[type="radio"]').name;
+                const textAreaName = step.querySelector('textarea')?.name;
+                
+                evaluationData.ratings[categoryName] = formData.get(radioName);
+                
+                if (textAreaName) {
+                    evaluationData.comments[categoryName] = formData.get(textAreaName);
+                }
+
+                const activePills = step.querySelectorAll('.pill.active');
+                evaluationData.adjectives[categoryName] = Array.from(activePills).map(pill => pill.textContent);
+            }
+        });
+        
+        console.log("Objeto JSON a ser enviado:", JSON.stringify(evaluationData, null, 2));
+
+        // Desabilita os botões para evitar envios múltiplos e dá feedback visual
+        submitBtn.disabled = true;
+        prevBtn.disabled = true; // Desabilita o de voltar também
+        submitBtn.textContent = 'Enviando...';
+        prevBtn.style.opacity = '0.5'; // Deixa o botão de voltar mais claro
+
+        // **PASSO 3: Enviar os dados para a API Gateway**
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(evaluationData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro na API: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // SUCESSO: A requisição funcionou!
+            console.log('Sucesso:', data);
+            currentStep = totalVisibleSteps;
+            updateFormSteps();
+            
+            // ESCONDE os botões e a barra APENAS em caso de sucesso
+            document.querySelector('.navigation-buttons').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+        })
+        .catch((error) => {
+            // ERRO: A requisição falhou!
+            console.error('Erro ao enviar avaliação:', error);
+            alert('Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.');
+            
+            // REABILITA os botões para que o usuário possa tentar novamente ou voltar
+            submitBtn.disabled = false;
+            prevBtn.disabled = false;
+            submitBtn.textContent = 'Enviar Avaliação';
+            prevBtn.style.opacity = '1';
+        });
+    });
+
+    updateFormSteps();
+});
+</script>
+
+</body>
+</html>
