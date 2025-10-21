@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS DO SEU RENDERER --- */
+        :root {
+            --primary-color: #000D3C;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f7f9;
+            --form-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #dfe6e9;
+            --pill-bg: #ecf0f1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .page-header {
+            width: 100%; max-width: 700px; padding: 20px 30px;
+            margin-bottom: 20px; border-radius: 12px; background: #ffffff;
+            color: #000D3C; display: flex; align-items: center;
+            box-shadow: 0 8px 30px rgba(3, 25, 122, 0.2);
+        }
+        .logo { height: 40px; margin-right: 20px; }
+        .header-title-container { flex-grow: 1; text-align: left; }
+        .header-title-container h3 { margin: 0; font-size: 18px; color: var(--light-text-color); font-weight: 500; }
+        #dashboard-title-display { font-size: 25px; }
+        .survey-container {
+            background-color: var(--form-background); border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); padding: 30px 40px;
+            width: 100%; max-width: 700px; overflow: hidden;
+        }
+        #dashboard-survey {
+            position: relative; min-height: 520px;
+            display: flex; flex-direction: column;
+        }
+        .progress-bar { width: 100%; background-color: #ecf0f1; border-radius: 5px; height: 10px; margin-bottom: 25px; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: var(--primary-color); border-radius: 5px; transition: width 0.4s ease-in-out; }
+        .form-step { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .form-step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .form-step h2 { font-size: 22px; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 12px; color: #34495e; }
+        .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; min-height: 80px; resize: vertical; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 13, 60, 0.1); }
+        
+        /* Estilos para Likert e NPS (copiados do seu original) */
+        .likert-scale { display: flex; justify-content: space-around; text-align: center; margin: 15px 0; }
+        .likert-scale input[type="radio"] { display: none; }
+        .likert-scale label { cursor: pointer; padding: 5px; border-radius: 8px; transition: transform 0.2s ease, background-color 0.2s ease; display: flex; flex-direction: column; align-items: center; width: 80px; }
+        .likert-scale label:hover { background-color: #f8faff; }
+        .likert-scale .likert-icon { height: 32px; display: block; }
+        .likert-scale .label-text { font-size: 12px; color: var(--light-text-color); margin-top: 4px; font-weight: 500; transition: color 0.2s ease, font-weight 0.2s ease; }
+        .likert-scale input:checked + label { transform: scale(1.1); }
+        .likert-scale input:checked + label .label-text { color: var(--primary-color); font-weight: 600; }
+        
+        .nps-scale { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 15px 0; }
+        .nps-scale input[type="radio"] { display: none; }
+        .nps-scale label { display: flex; justify-content: center; align-items: center; width: 45px; height: 45px; border: 1px solid #bdc3c7; border-radius: 50%; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .nps-scale label:hover { background-color: #ecf0f1; border-color: var(--primary-color); }
+        .nps-scale input[type="radio"]:checked + label { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+
+        .pills-wrapper { margin-top: 10px; }
+        .adjective-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-bottom: 20px; }
+        .pill { background-color: var(--pill-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s ease-in-out; }
+        .pill:hover { border-color: var(--primary-color); }
+        .pill.active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .pill-placeholder { color: transparent; background-color: #f4f7f9; border-color: #e9eef2; cursor: default; user-select: none; }
+        .pill-placeholder:hover { border-color: #e9eef2; }
+        
+        .navigation-buttons { display: flex; margin-top: auto; padding-top: 20px; }
+        .btn-next, .btn-submit { margin-left: auto; }
+        .btn { background-color: var(--primary-color); color: #ffffff; border: none; border-radius: 8px; padding: 12px 25px; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background-color 0.3s, transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:disabled { background-color: #555; cursor: not-allowed; opacity: 0.7; }
+        .btn-prev { background-color: #bdc3c7; }
+        .btn-prev:hover { background-color: #95a5a6; }
+        .btn-submit { background-color: var(--secondary-color); }
+        .btn-submit:hover { background-color: #27ae60; }
+        
+        #thank-you-message { text-align: center; }
+        .thank-you-image { max-width: 200px; margin: 20px auto; display: block; }
+        #thank-you-message h2 { color: var(--primary-color); font-size: 28px; }
+        #loading-message { text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+
+    <header class="page-header" style="display: none;">
+        <img src="./imagem/logo_azul.svg" alt="Logo da Empresa" class="logo">
+        <div class="header-title-container">
+            <h3 id="form-theme-title">Formulário de Avaliação</h3>
+            <h1 id="dashboard-title-display">Carregando...</h1>
+        </div>
+    </header>
+
+    <div class="survey-container">
+        <div id="loading-message">
+            <h2>Carregando formulário...</h2>
+            <p>Por favor, aguarde.</p>
+        </div>
+        
+        <form id="dashboard-survey" style="display: none;">
+            <input type="hidden" id="dashboard-name-hidden" name="dashboard_name">
+            <input type="hidden" id="squad-name-hidden" name="squad_name">
+            <input type="hidden" id="rt-name-hidden" name="rt_name">
+            <input type="hidden" id="email-hidden" name="user_email">
+            <input type="hidden" id="form-id-hidden" name="form_id">
+
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        
+            <div id="dynamic-form-steps"></div>
+            
+            <div class="form-step" id="thank-you-message">
+                <img src="./imagem/Final_forms.svg" alt="Formulário Concluído" class="thank-you-image">
+                <h2>Obrigado!</h2>
+                <p>Seu feedback foi recebido e é muito importante para nós.</p>
+            </div>
+
+            <div class="navigation-buttons">
+                <button type="button" class="btn btn-prev" id="prev-btn" style="display: none;">Voltar</button>
+                <button type="button" class="btn btn-next" id="next-btn">Próximo</button>
+                <button type="submit" class="btn btn-submit" id="submit-btn" style="display: none;">Enviar Avaliação</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- PONTO DE CONFIGURAÇÃO PRINCIPAL ---
+    // Cole a URL de invocação da sua API Gateway aqui
+    // IMPORTANTE: Esta API deve apontar para uma função Lambda que envia os DADOS FINAIS
+    // (Pode ser a mesma API 'saveForm' ou uma nova 'submitResponse')
+    const SUBMIT_API_URL = 'https://osjimi01h9.execute-api.us-east-2.amazonaws.com/prod/avaliacao'; 
+    
+    // API para BUSCAR a configuração do formulário
+    const GET_FORM_API_URL = 'https://clnbw9qle5.execute-api.us-east-2.amazonaws.com'; // A URL do seu API Gateway principal
+
+    // --- VARIÁVEIS GLOBAIS ---
+    let formConfig = {}; // Armazena a configuração carregada da API
+    let steps = [];
+    let currentStep = 0;
+    const likertScoreMap = { "Muito Ruim": 1, "Ruim": 2, "Regular": 3, "Bom": 4, "Muito Bom": 5 };
+
+    // --- ELEMENTOS DO DOM ---
+    const pageHeader = document.querySelector('.page-header');
+    const surveyContainer = document.querySelector('.survey-container');
+    const loadingMessage = document.getElementById('loading-message');
+    const formEl = document.getElementById('dashboard-survey');
+    const progressFill = document.getElementById('progress-fill');
+    const dynamicFormSteps = document.getElementById('dynamic-form-steps');
+    const thankYouStep = document.getElementById('thank-you-message');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // --- FUNÇÕES DE RENDERIZAÇÃO DO PREVIEW ---
+    function createLikertHTML(key) {
+        const options = [ { value: "Muito Ruim", icon: "muito_ruim" }, { value: "Ruim", icon: "ruim" }, { value: "Regular", icon: "regular" }, { value: "Bom", icon: "bom" }, { value: "Muito Bom", icon: "muito_bom" }];
+        return `<div class="likert-scale">${options.map(opt => `<input type="radio" id="likert-${key}-${opt.icon}" name="eval_${key}" value="${opt.value}" required><label for="likert-${key}-${opt.icon}"><img src="./imagem/icon_${opt.icon}.svg" alt="${opt.value}" class="likert-icon"><span class="label-text">${opt.value}</span></label>`).join('')}</div>`;
+    }
+    function createNPSHTML(key, max) {
+        let optionsHTML = '';
+        for (let i = 0; i <= max; i++) { optionsHTML += `<input type="radio" id="nps-${key}-${i}" name="eval_${key}" value="${i}" required><label for="nps-${key}-${i}">${i}</label>`; }
+        return `<div class="nps-scale">${optionsHTML}</div>`;
+    }
+    function createEvaluationScaleHTML(questionConfig) {
+        const type = questionConfig.evaluationType || 'Likert';
+        switch (type) {
+            case 'NPS(0-5)': return createNPSHTML(questionConfig.key, 5);
+            case 'NPS(0-10)': return createNPSHTML(questionConfig.key, 10);
+            case 'Backlog': return ''; // Backlog não tem escala de avaliação
+            default: return createLikertHTML(questionConfig.key);
+        }
+    }
+    function createPriorityPillsHTML(key) {
+        const priorities = [ {label: 'Urgente', class: 'urgent'}, {label: 'Alta', class: 'high'}, {label: 'Média', class: 'medium'}, {label: 'Baixa', class: 'low'} ];
+        return `<div class="form-group"><label>Prioridade da Solicitação</label><div class="priority-pills">${priorities.map(p => `<div class="priority-pill ${p.class}" data-key="${key}">${p.label}</div>`).join('')}</div></div>`;
+    }
+
+    // --- FUNÇÕES DE LÓGICA DO FORMULÁRIO ---
+    
+    // Constrói o HTML das etapas do formulário
+    function buildFormFromConfig() {
+        let formHTML = '';
+        const titlePrefix = formConfig.questions.length > 1 ? true : false;
+        
+        formConfig.questions.forEach((stepConfig, index) => {
+            const key = stepConfig.key;
+            let evalHTML = stepConfig.showEvaluation !== false ? `<div class="form-group"><label>${stepConfig.likertQuestion || 'Qual sua avaliação?'}</label>${createEvaluationScaleHTML(stepConfig)}</div>` : '';
+            
+            let priorityHTML = '';
+            if(stepConfig.evaluationType === 'Backlog' && stepConfig.showPriorityTags === true) {
+                priorityHTML = createPriorityPillsHTML(key);
+            }
+            
+            let tagsHTML = '';
+            if (stepConfig.showTags === true) {
+                const tagsLabel = stepConfig.tagsQuestionText || 'Selecione as tags relevantes (opcional)';
+                tagsHTML = `<div class="form-group"><label>${tagsLabel}</label><div class="adjective-pills">`;
+                if (stepConfig.evaluationType === 'Backlog') {
+                    const allAdjectives = [...(stepConfig.adjectives?.positive || []), ...(stepConfig.adjectives?.negative || [])];
+                    tagsHTML += allAdjectives.length > 0 ? allAdjectives.map(adj => `<div class="pill" data-key="${key}">${adj}</div>`).join('') : '<div class="pill pill-placeholder">Sem tags</div>';
+                } else {
+                    tagsHTML += `<div class="pill pill-placeholder">&nbsp;</div><div class="pill pill-placeholder">&nbsp;</div><div class="pill pill-placeholder">&nbsp;</div>`;
+                }
+                tagsHTML += `</div></div>`;
+            }
+
+            let commentsHTML = '';
+            if (stepConfig.commentSection?.visible === true) {
+                commentsHTML = `<div class="form-group"><label for="comments-${key}">${stepConfig.commentSection.title || 'Comentários'}</label><textarea id="comments-${key}" name="comments_${key}" placeholder="${stepConfig.commentSection.placeholder || ''}"></textarea></div>`;
+            }
+
+            formHTML += `<div class="form-step" data-step="${index}">
+                            <h2>${titlePrefix ? `${index + 1}. ` : ''}${stepConfig.title}</h2>
+                            ${evalHTML}
+                            ${priorityHTML}
+                            ${tagsHTML}
+                            ${commentsHTML}
+                         </div>`;
+        });
+        
+        dynamicFormSteps.innerHTML = formHTML;
+    }
+
+    // Mostra as tags corretas após uma nota ser dada (para Likert/NPS)
+    function handleEvaluationSelection(event) {
+        const selectedRadio = event.target;
+        const key = selectedRadio.name.replace('eval_', '');
+        const questionConfig = formConfig.questions.find(q => q.key === key);
+        if (!questionConfig || !questionConfig.showTags || questionConfig.evaluationType === 'Backlog') return;
+        
+        const pillsContainer = selectedRadio.closest('.form-step').querySelector('.adjective-pills');
+        if (!pillsContainer) return;
+
+        let score;
+        if (questionConfig.evaluationType === 'Likert') { score = likertScoreMap[selectedRadio.value]; } 
+        else { score = parseInt(selectedRadio.value, 10); }
+
+        let adjectivesToShow = [];
+        if (questionConfig.evaluationType === 'NPS(0-10)') {
+            if (score <= 6) adjectivesToShow = questionConfig.adjectives.negative;
+            else if (score <= 8) adjectivesToShow = [...(questionConfig.adjectives.negative || []), ...(questionConfig.adjectives.positive || [])];
+            else adjectivesToShow = questionConfig.adjectives.positive;
+        } else {
+            const maxScore = (questionConfig.evaluationType === 'NPS(0-5)') ? 5 : 5;
+            const scoreThreshold = Math.ceil(maxScore / 2);
+            if (score < scoreThreshold) adjectivesToShow = questionConfig.adjectives.negative;
+            else if (score === scoreThreshold) adjectivesToShow = [...(questionConfig.adjectives.negative || []), ...(questionConfig.adjectives.positive || [])];
+            else adjectivesToShow = questionConfig.adjectives.positive;
+        }
+        
+        pillsContainer.style.opacity = 0;
+        setTimeout(() => {
+             pillsContainer.innerHTML = adjectivesToShow.map(adj => `<div class="pill" data-key="${key}">${adj}</div>`).join('');
+             pillsContainer.style.opacity = 1;
+        }, 200); // Pequena transição
+    }
+
+    // Atualiza a UI para a etapa correta (progress bar, botões, etc.)
+    function updateFormSteps() {
+        const totalVisibleSteps = formConfig.questions.length;
+        steps.forEach(step => step.classList.remove('active'));
+        steps[currentStep].classList.add('active');
+        
+        const progressPercent = totalVisibleSteps > 1 ? (currentStep / (totalVisibleSteps - 1)) * 100 : (currentStep > 0 ? 100 : 0);
+        progressFill.style.width = `${progressPercent}%`;
+
+        prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+        nextBtn.style.display = currentStep === totalVisibleSteps - 1 ? 'none' : 'inline-block';
+        submitBtn.style.display = currentStep === totalVisibleSteps - 1 ? 'inline-block' : 'none';
+
+        if (currentStep === totalVisibleSteps) { // Tela de "Obrigado"
+            document.querySelector('.navigation-buttons').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+        } else {
+             document.querySelector('.navigation-buttons').style.display = 'flex';
+             document.querySelector('.progress-bar').style.display = 'block';
+        }
+    }
+    
+    // Valida a etapa atual antes de avançar
+    function validateStep() {
+        if (currentStep >= formConfig.questions.length) return true;
+        const stepConfig = formConfig.questions[currentStep];
+        if (!stepConfig) return false;
+
+        // Se avaliação estiver oculta ou for Backlog, não valida rádio
+        if (stepConfig.showEvaluation === false || stepConfig.evaluationType === 'Backlog') {
+            return true;
+        }
+
+        const currentStepElement = steps[currentStep];
+        const radioName = `eval_${stepConfig.key}`;
+        const selectedOption = currentStepElement.querySelector(`input[name="${radioName}"]:checked`);
+        
+        if (!selectedOption) {
+            alert('Por favor, selecione uma nota para continuar.');
+            return false;
+        }
+        return true;
+    }
+
+    // --- FUNÇÃO PRINCIPAL DE INICIALIZAÇÃO ---
+    async function initializeForm() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const formId = urlParams.get('formId');
+        
+        if (!formId) {
+            loadingMessage.innerHTML = '<h2 style="color: red;">Erro: ID do formulário não encontrado na URL.</h2>';
+            return;
+        }
+
+        try {
+            // 1. Buscar a configuração do formulário
+            const response = await fetch(`${GET_FORM_API_URL}/forms/${formId}`);
+            if (!response.ok) {
+                if (response.status === 404) throw new Error(`Formulário com ID "${formId}" não foi encontrado.`);
+                throw new Error(`Erro ${response.status} ao buscar o formulário.`);
+            }
+            formConfig = await response.json(); // API retorna o 'formConfiguration'
+            window.currentFormConfig = formConfig; // Expondo globalmente para handlers
+
+            // 2. Preencher o cabeçalho
+            pageHeader.querySelector('#dashboard-title-display').textContent = formConfig.formTitle;
+            pageHeader.querySelector('#form-theme-title').textContent = formConfig.headerSubtitle;
+            
+            // 3. Preencher os campos hidden do formulário
+            document.getElementById('form-id-hidden').value = formId;
+            document.getElementById('dashboard-name-hidden').value = formConfig.formTitle || '';
+            document.getElementById('squad-name-hidden').value = formConfig.metadata?.squadName || '';
+            document.getElementById('rt-name-hidden').value = formConfig.metadata?.rtName || '';
+            // Tenta pegar e-mail da URL (se passado)
+            const emailFromURL = urlParams.get('email');
+            if(emailFromURL){
+                document.getElementById('email-hidden').value = decodeURIComponent(emailFromURL);
+            }
+
+            // 4. Construir o HTML do formulário
+            buildFormFromConfig();
+
+            // 5. Preparar as etapas para navegação
+            const dynamicSteps = Array.from(dynamicFormSteps.querySelectorAll('.form-step'));
+            steps = [...dynamicSteps, thankYouStep]; // Adiciona a etapa de "Obrigado"
+            
+            // 6. Anexar todos os event listeners
+            attachFormListeners();
+
+            // 7. Esconder loading e mostrar formulário
+            loadingMessage.style.display = 'none';
+            formEl.style.display = 'flex';
+            pageHeader.style.display = 'flex';
+            
+            // 8. Exibir a primeira etapa
+            currentStep = 0;
+            updateFormSteps();
+
+        } catch (error) {
+            console.error('Erro ao carregar formulário:', error);
+            loadingMessage.innerHTML = `<h2 style="color: red;">Erro ao carregar o formulário:</h2><p>${error.message}</p>`;
+        }
+    }
+    
+    // Anexa os listeners de navegação e interação
+    function attachFormListeners() {
+        nextBtn.addEventListener('click', () => {
+            if (validateStep() && currentStep < formConfig.questions.length - 1) {
+                currentStep++;
+                updateFormSteps();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateFormSteps();
+            }
+        });
+
+        // Listeners de interação (seleção de nota, tags, etc.)
+        formEl.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                handleEvaluationSelection(e);
+            }
+        });
+
+        formEl.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('pill') && !target.classList.contains('pill-placeholder')) {
+                target.classList.toggle('active');
+            }
+            if (target.classList.contains('priority-pill')) {
+                // Lógica de seleção única para prioridade
+                const key = `priority_${target.dataset.key}`;
+                if (target.classList.contains('active')) {
+                    target.classList.remove('active');
+                } else {
+                    target.parentElement.querySelectorAll('.priority-pill').forEach(p => p.classList.remove('active'));
+                    target.classList.add('active');
+                }
+            }
+        });
+
+        // Listener de Submit
+        formEl.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!validateStep()) return;
+            
+            submitBtn.disabled = true;
+            prevBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            // Coleta os dados
+            const formData = new FormData(formEl);
+            const evaluationData = {
+                formId: formData.get('form_id'),
+                dashboardName: formData.get('dashboard_name'),
+                squadName: formData.get('squad_name'),
+                rtName: formData.get('rt_name'),
+                userEmail: formData.get('user_email'),
+                responses: [] // Estrutura padronizada de respostas
+            };
+
+            formConfig.questions.forEach((stepConfig, index) => {
+                const step = steps[index];
+                const key = stepConfig.key;
+                
+                const rating = formData.get(`eval_${key}`) || null;
+                const comment = formData.get(`comments_${key}`) || null;
+                
+                const activePills = Array.from(step.querySelectorAll('.pill.active')).map(pill => pill.textContent);
+                const activePriority = step.querySelector('.priority-pill.active')?.textContent || null;
+                
+                evaluationData.responses.push({
+                    key: key,
+                    title: stepConfig.title,
+                    rating: rating,
+                    priority: activePriority,
+                    tags: activePills,
+                    comment: comment
+                });
+            });
+            
+            console.log("Objeto JSON a ser enviado:", JSON.stringify(evaluationData, null, 2));
+            
+            // Envia para a API
+            fetch(SUBMIT_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(evaluationData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro na API: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Sucesso:', data);
+                currentStep = formConfig.questions.length; // Avança para a etapa "Obrigado"
+                updateFormSteps();
+            })
+            .catch((error) => {
+                console.error('Erro ao enviar avaliação:', error);
+                alert('Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.');
+                submitBtn.disabled = false;
+                prevBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Avaliação';
+            });
+        });
+    }
+
+    // --- INICIA A APLICAÇÃO ---
+    initializeForm();
+
+});
+</script>
+
+</body>
+</html>

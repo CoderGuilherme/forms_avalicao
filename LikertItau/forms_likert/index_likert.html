@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Avaliação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000D3C;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f7f9;
+            --form-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #dfe6e9;
+            --pill-bg: #ecf0f1;
+            --error-color: #e74c3c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--background-color); color: var(--text-color); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .page-header { width: 100%; max-width: 700px; padding: 20px 30px; margin-bottom: 20px; border-radius: 12px; background: #ffffff; color: #000D3C; display: flex; align-items: center; box-shadow: 0 8px 30px rgba(3, 25, 122, 0.2); }
+        .logo { height: 40px; margin-right: 20px; }
+        .header-title-container { flex-grow: 1; text-align: left; }
+        .header-title-container h3 { margin: 0; font-size: 18px; color: var(--light-text-color); font-weight: 500; }
+        #dashboard-title-display { font-size: 25px; }
+        .survey-container { background-color: var(--form-background); border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); padding: 30px 40px; width: 100%; max-width: 700px; overflow: hidden; }
+        .error-message { text-align: center; padding: 40px 20px; }
+        .error-message h2 { color: var(--error-color); }
+        .error-message code { background-color: #ecf0f1; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        #dashboard-survey { position: relative; min-height: 520px; display: flex; flex-direction: column; }
+        .progress-bar { width: 100%; background-color: #ecf0f1; border-radius: 5px; height: 10px; margin-bottom: 25px; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: var(--primary-color); border-radius: 5px; transition: width 0.4s ease-in-out; }
+        .form-step { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .form-step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .form-step h2 { font-size: 22px; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 12px; color: #34495e; }
+        .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; min-height: 80px; resize: vertical; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 13, 60, 0.1); }
+        .likert-scale { display: flex; justify-content: space-around; text-align: center; margin: 15px 0; }
+        .likert-scale input[type="radio"] { display: none; }
+        .likert-scale label { cursor: pointer; padding: 5px; border-radius: 8px; transition: transform 0.2s ease, background-color 0.2s ease; display: flex; flex-direction: column; align-items: center; width: 80px; }
+        .likert-scale label:hover { background-color: #f8faff; }
+        .likert-scale .likert-icon { height: 32px; display: block; }
+        .likert-scale .label-text { font-size: 12px; color: var(--light-text-color); margin-top: 4px; font-weight: 500; transition: color 0.2s ease, font-weight 0.2s ease; }
+        .likert-scale input:checked + label { transform: scale(1.1); }
+        .likert-scale input:checked + label .label-text { color: var(--primary-color); font-weight: 600; }
+        .nps-scale { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 15px 0; }
+        .nps-scale input[type="radio"] { display: none; }
+        .nps-scale label { display: flex; justify-content: center; align-items: center; width: 45px; height: 45px; border: 1px solid #bdc3c7; border-radius: 50%; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .nps-scale label:hover { background-color: #ecf0f1; border-color: var(--primary-color); }
+        .nps-scale input[type="radio"]:checked + label { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .pills-wrapper { margin-top: 10px; }
+        .adjective-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-bottom: 20px; }
+        .pill { background-color: var(--pill-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s ease-in-out; }
+        .pill:hover { border-color: var(--primary-color); }
+        .pill.active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .pill-placeholder { color: transparent; background-color: #f4f7f9; border-color: #e9eef2; cursor: default; user-select: none; }
+        .pill-placeholder:hover { border-color: #e9eef2; }
+        .navigation-buttons { display: flex; margin-top: auto; padding-top: 20px; }
+        .btn-next, .btn-submit { margin-left: auto; }
+        .btn { background-color: var(--primary-color); color: #ffffff; border: none; border-radius: 8px; padding: 12px 25px; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background-color 0.3s, transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:disabled { background-color: #555; cursor: not-allowed; opacity: 0.7; }
+        .btn-prev { background-color: #bdc3c7; }
+        .btn-prev:hover { background-color: #95a5a6; }
+        .btn-submit { background-color: var(--secondary-color); }
+        .btn-submit:hover { background-color: #27ae60; }
+        #thank-you-message { text-align: center; }
+        .thank-you-image { max-width: 200px; margin: 20px auto; display: block; }
+        #thank-you-message h2 { color: var(--primary-color); font-size: 28px; }
+    </style>
+</head>
+<body>
+    <header class="page-header" style="display: none;">
+        <img src="./imagem/logo_azul.svg" alt="Logo da Empresa" class="logo">
+        <div class="header-title-container">
+            <h3 id="header-subtitle"></h3>
+            <h1 id="dashboard-title-display"></h1>
+        </div>
+    </header>
+
+    <div class="survey-container">
+        <div id="form-loader"></div>
+        <form id="dashboard-survey" style="display: none;">
+            <input type="hidden" id="formsID-hidden" name="formsID">
+
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <div id="dynamic-form-steps"></div>
+            <div class="form-step" id="thank-you-message">
+                <img src="./imagem/Final_forms.svg" alt="Formulário Concluído" class="thank-you-image">
+                <h2>Obrigado!</h2>
+                <p>Seu feedback foi recebido e é muito importante para nós.</p>
+            </div>
+            <div class="navigation-buttons">
+                <button type="button" class="btn btn-prev" id="prev-btn" style="display: none;">Voltar</button>
+                <button type="button" class="btn btn-next" id="next-btn">Próximo</button>
+                <button type="submit" class="btn btn-submit" id="submit-btn" style="display: none;">Enviar Avaliação</button>
+            </div>
+        </form>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let currentThemeConfig = {}; 
+    let steps = [];
+    let currentStep = 0;
+    
+    const likertScoreMap = { "Muito Ruim": 1, "Ruim": 2, "Regular": 3, "Bom": 4, "Muito Bom": 5 };
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const formEl = document.getElementById('dashboard-survey');
+    const progressFill = document.getElementById('progress-fill');
+    const formLoader = document.getElementById('form-loader');
+
+    function showError(message) {
+        document.querySelector('.page-header').style.display = 'none';
+        formLoader.innerHTML = `<div class="error-message"><h2>Ocorreu um Erro</h2><p>${message}</p></div>`;
+    }
+
+    function createLikertHTML(key) {
+        const options = [ { value: "Muito Ruim", icon: "muito_ruim" }, { value: "Ruim", icon: "ruim" }, { value: "Regular", icon: "regular" }, { value: "Bom", icon: "bom" }, { value: "Muito Bom", icon: "muito_bom" }];
+        return `<div class="likert-scale">${options.map((opt) => `<input type="radio" id="likert-${key}-${opt.icon}" name="eval_${key}" value="${opt.value}" required><label for="likert-${key}-${opt.icon}"><img src="./imagem/icon_${opt.icon}.svg" alt="${opt.value}" class="likert-icon"><span class="label-text">${opt.value}</span></label>`).join('')}</div>`;
+    }
+
+    function createNPSHTML(key, max) {
+        let optionsHTML = '';
+        for (let i = 0; i <= max; i++) {
+            optionsHTML += `<input type="radio" id="nps-${key}-${i}" name="eval_${key}" value="${i}" required><label for="nps-${key}-${i}">${i}</label>`;
+        }
+        return `<div class="nps-scale">${optionsHTML}</div>`;
+    }
+    
+    function createEvaluationScaleHTML(questionConfig) {
+        const type = questionConfig.evaluationType || 'Likert';
+        const key = questionConfig.key;
+        switch (type) {
+            case 'NPS(0-5)': return createNPSHTML(key, 5);
+            case 'NPS(0-10)': return createNPSHTML(key, 10);
+            case 'Likert': default: return createLikertHTML(key);
+        }
+    }
+
+    function buildFormFromConfig() {
+        const container = document.getElementById('dynamic-form-steps');
+        let formHTML = '';
+        const totalQuestions = currentThemeConfig.questions.length;
+
+        currentThemeConfig.questions.forEach((stepConfig, index) => {
+            const questionTitle = totalQuestions > 1 ? `${index + 1}. ${stepConfig.title}` : stepConfig.title;
+            let evaluationHTML = '';
+            if (stepConfig.showEvaluation !== false) {
+                evaluationHTML = `<div class="form-group">${createEvaluationScaleHTML(stepConfig)}</div>`;
+            }
+            let tagsHTML = '';
+            if (stepConfig.showTags === true) {
+                tagsHTML = `<div class="form-group"><label>Quais palavras descrevem sua experiência? (opcional)</label><div class="pills-wrapper"><div class="adjective-pills"></div></div></div>`;
+            }
+            let commentsHTML = '';
+            if (stepConfig.commentSection && stepConfig.commentSection.visible === true) {
+                const title = stepConfig.commentSection.title || 'Comentários (opcional)';
+                const placeholder = stepConfig.commentSection.placeholder || '';
+                commentsHTML = `<div class="form-group"><label for="comments-${stepConfig.key}">${title}</label><textarea id="comments-${stepConfig.key}" name="comments_${stepConfig.key}" placeholder="${placeholder}"></textarea></div>`;
+            }
+            formHTML += `<div class="form-step" data-step="${index}"><h2>${questionTitle}</h2>${evaluationHTML}${tagsHTML}${commentsHTML}</div>`;
+        });
+        container.innerHTML = formHTML;
+    }
+
+    function handleEvaluationSelection(event) {
+        const selectedRadio = event.target;
+        const key = selectedRadio.name.replace('eval_', '');
+        const questionConfig = currentThemeConfig.questions.find(q => q.key === key);
+        if (!questionConfig || questionConfig.showTags !== true) return;
+        const type = questionConfig.evaluationType || 'Likert';
+        let score;
+        if (type === 'Likert') { score = likertScoreMap[selectedRadio.value]; } 
+        else { score = parseInt(selectedRadio.value, 10); }
+        const pillsContainer = selectedRadio.closest('.form-step').querySelector('.adjective-pills');
+        if (!pillsContainer) return;
+        pillsContainer.innerHTML = '';
+        let adjectivesToShow = [];
+        if (type === 'NPS(0-10)') {
+            if (score <= 6) adjectivesToShow = questionConfig.adjectives.negative;
+            else if (score <= 8) adjectivesToShow = [...(questionConfig.adjectives.negative || []), ...(questionConfig.adjectives.positive || [])];
+            else adjectivesToShow = questionConfig.adjectives.positive;
+        } else {
+            const maxScore = (type === 'NPS(0-5)') ? 5 : 5;
+            const scoreThreshold = Math.ceil(maxScore / 2);
+            if (score < scoreThreshold -1) adjectivesToShow = questionConfig.adjectives.negative;
+            else if (score === scoreThreshold -1) adjectivesToShow = [...(questionConfig.adjectives.negative || []), ...(questionConfig.adjectives.positive || [])];
+            else adjectivesToShow = questionConfig.adjectives.positive;
+        }
+        adjectivesToShow.forEach(adj => {
+            const pill = document.createElement('div');
+            pill.className = 'pill';
+            pill.textContent = adj;
+            pill.addEventListener('click', () => pill.classList.toggle('active'));
+            pillsContainer.appendChild(pill);
+        });
+    }
+
+    function updateFormSteps() {
+        const totalVisibleSteps = currentThemeConfig.questions.length;
+        steps.forEach(step => step.classList.remove('active'));
+        steps[currentStep].classList.add('active');
+        const progressPercent = totalVisibleSteps > 1 ? (currentStep / (totalVisibleSteps - 1)) * 100 : (currentStep > 0 ? 100 : 0);
+        progressFill.style.width = `${progressPercent}%`;
+        prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+        nextBtn.style.display = currentStep < totalVisibleSteps - 1 ? 'inline-block' : 'none';
+        submitBtn.style.display = currentStep === totalVisibleSteps - 1 ? 'inline-block' : 'none';
+        if (currentStep >= totalVisibleSteps) {
+            document.querySelector('.navigation-buttons').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+        }
+    }
+    
+    function validateStep() {
+        const stepConfig = currentThemeConfig.questions[currentStep];
+        if (stepConfig && stepConfig.showEvaluation === false) { return true; }
+        const requiredRadio = steps[currentStep].querySelector('input[type="radio"][required]');
+        if (requiredRadio && !steps[currentStep].querySelector(`input[name="${requiredRadio.name}"]:checked`)) {
+            alert('Por favor, selecione uma avaliação para continuar.');
+            return false;
+        }
+        return true;
+    }
+
+    function initializeForm(formsID, urlParams) {
+        document.getElementById('header-subtitle').textContent = currentThemeConfig.headerSubtitle || "Formulário de Avaliação";
+        document.getElementById('dashboard-title-display').textContent = currentThemeConfig.formTitle || "Avaliação";
+        buildFormFromConfig();
+        const dynamicSteps = Array.from(document.querySelectorAll('#dynamic-form-steps .form-step'));
+        const thankYouStep = document.getElementById('thank-you-message');
+        steps = [...dynamicSteps, thankYouStep];
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.addEventListener('change', handleEvaluationSelection));
+        
+        // MUDANÇA: 'theme-hidden' agora é 'formsID-hidden'
+        document.getElementById('formsID-hidden').value = formsID;
+
+        formLoader.style.display = 'none';
+        formEl.style.display = 'flex';
+        document.querySelector('.page-header').style.display = 'flex';
+        updateFormSteps();
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    // --- MUDANÇA: Parâmetro da URL agora é 'formsID' ---
+    const formsID = urlParams.get('formsID') || 'default';
+    const configPath = `./themes/${formsID}.json`;
+
+    fetch(configPath)
+        .then(response => { if (!response.ok) { throw new Error(`Arquivo de configuração não encontrado para o formsID <code>${formsID}</code>.`); } return response.json(); })
+        .then(themeData => {
+            currentThemeConfig = themeData;
+            initializeForm(formsID, urlParams);
+        })
+        .catch(error => {
+            console.error(error);
+            showError(error.message);
+        });
+
+    nextBtn.addEventListener('click', () => { if (validateStep() && currentStep < currentThemeConfig.questions.length - 1) { currentStep++; updateFormSteps(); } });
+    prevBtn.addEventListener('click', () => { if (currentStep > 0) { currentStep--; updateFormSteps(); } });
+    
+    formEl.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!validateStep()) return;
+        
+        const apiUrl = 'https://osjimi01h9.execute-api.us-east-2.amazonaws.com/prod/avaliacao';
+        const formData = new FormData(formEl);
+        
+        // --- LÓGICA DE SUBMISSÃO COMPLETAMENTE ATUALIZADA ---
+        const urlAutor = urlParams.get('autor');
+        const urlRtName = urlParams.get('rtName');
+        const urlSquadName = urlParams.get('squadName');
+        const userName = urlParams.get('userName');
+        const nomePainel = urlParams.get('painel');
+        const configMeta = currentThemeConfig.metadata || {};
+
+        const finalMetadata = {
+            ...configMeta,
+            // MUDANÇA: 'formTheme' agora é 'formsID'
+            formsID: formData.get('formsID'),
+            autor: urlAutor || configMeta.autor || null,
+            rtName: urlRtName || configMeta.rtName || null,
+            squadName: urlSquadName || configMeta.squadName || null,
+            userName: userName || null,
+            nomePainel: nomePainel || null
+        };
+        
+        const evaluationData = {
+            // MUDANÇA: 'formId' aleatório foi removido
+            timestamp: new Date().toISOString(),
+            metadata: finalMetadata,
+            responses: []
+        };
+
+        currentThemeConfig.questions.forEach((config, index) => {
+            const key = config.key;
+            const commentInput = document.querySelector(`#comments-${key}`);
+            const pillsContainer = document.querySelector(`.form-step[data-step="${index}"] .adjective-pills`);
+            let activePills = [];
+            if(pillsContainer) {
+                activePills = Array.from(pillsContainer.querySelectorAll('.pill.active')).map(pill => pill.textContent);
+            }
+            const responseObject = {
+                key: key,
+                title: config.title,
+                rating: formData.get(`eval_${key}`) || null,
+                comment: commentInput ? commentInput.value : null,
+                tags: activePills
+            };
+            evaluationData.responses.push(responseObject);
+        });
+        
+        console.log("JSON final enviado:", JSON.stringify(evaluationData, null, 2));
+        submitBtn.disabled = true;
+        prevBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        
+        fetch(apiUrl, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(evaluationData), 
+        })
+        .then(response => { 
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(`Erro na API: ${response.status} ${response.statusText} - ${text}`); });
+            }
+            return response.json(); 
+        })
+        .then(data => {
+            console.log('Sucesso:', data);
+            currentStep = currentThemeConfig.questions.length;
+            updateFormSteps();
+        })
+        .catch((error) => {
+            console.error('Erro ao enviar avaliação:', error);
+            alert(`Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.\nDetalhes: ${error.message}`);
+            submitBtn.disabled = false;
+            prevBtn.disabled = false;
+            submitBtn.textContent = 'Enviar Avaliação';
+        });
+    });
+});
+</script>
+</body>
+</html>

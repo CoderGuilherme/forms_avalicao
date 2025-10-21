@@ -1,0 +1,61 @@
+{
+  "formTitle": "Avaliação Detalhada do Painel",
+  "questions": [
+    {
+      "key": "frequencia_acesso",
+      "title": "Frequência de Uso",
+      "evaluationType": "NPS(0-5)",
+      "likertQuestion": "De 0 a 5, qual sua frequência de acesso no painel? (0 = Nunca, 5 = Diariamente)",
+      "showTags": true,
+      "adjectives": {
+        "positive": [
+          "Diariamente",
+          "Semanalmente",
+          "Frequentemente"
+        ],
+        "negative": [
+          "Raramente",
+          "Mensalmente",
+          "Apenas quando solicitado"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Existe algo que impede um acesso mais frequente?",
+        "placeholder": "Ex: Performance lenta, faltam dados, etc."
+      }
+    },
+    {
+      "key": "facilidade_encontrar_info",
+      "title": "Facilidade de Navegação",
+      "evaluationType": "NPS(0-5)",
+      "likertQuestion": "De 0 a 5, quão fácil é encontrar a informação que você precisa? (0 = Muito Difícil, 5 = Muito Fácil)",
+      "showTags": false,
+      "adjectives": {
+        "positive": [],
+        "negative": []
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "O que poderia ser mais fácil de encontrar?",
+        "placeholder": "Ex: KPIs específicos, filtros, etc."
+      }
+    },
+    {
+      "key": "indicacao_analise_diaria",
+      "title": "Indicação para Análises",
+      "evaluationType": "NPS(0-5)",
+      "likertQuestion": "De 0 a 5, o quanto você indicaria este painel para um colega realizar análises diárias? (0 = Não indicaria, 5 = Indicaria com certeza)",
+      "showTags": false,
+      "adjectives": {
+        "positive": [],
+        "negative": []
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Qual o motivo da sua indicação (ou não indicação)?",
+        "placeholder": "Ex: É completo, faltam dados, etc."
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "formTitle": "Solicitação de Melhoria no Painel",
+  "questions": [
+    {
+      "key": "descricao_solicitacao",
+      "title": "Descrição da Melhoria",
+      "showEvaluation": false,
+      "showTags": false,
+      "adjectives": {
+        "positive": [],
+        "negative": []
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Descreva em detalhes a melhoria ou correção que você precisa:",
+        "placeholder": "Ex: Adicionar um novo filtro de 'Região' na tabela de vendas. O KPI 'Taxa de Conversão' parece estar com o cálculo incorreto..."
+      }
+    }
+  ]
+}

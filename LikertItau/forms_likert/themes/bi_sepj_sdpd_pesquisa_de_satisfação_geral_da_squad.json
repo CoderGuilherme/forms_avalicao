@@ -1,0 +1,93 @@
+{
+  "formTitle": "Pesquisa de Satisfação Geral da Squad",
+  "headerSubtitle": "Formulário de Avaliação",
+  "metadata": {
+    "autor": "Guilherme",
+    "rtName": "BI SEPJ",
+    "squadName": "SDPD",
+    "formsID": "bi_sepj_sdpd_pesquisa_de_satisfação_geral_da_squad"
+  },
+  "questions": [
+    {
+      "key": "satisfacao_entregas_sdpd",
+      "title": "Qualidade das Entregas",
+      "showEvaluation": true,
+      "evaluationType": "Likert",
+      "likertQuestion": "De forma geral, qual o seu nível de satisfação com as entregas da squad SDPD?",
+      "showTags": true,
+      "adjectives": {
+        "positive": [
+          "Superou a expectativa",
+          "Alta Qualidade",
+          "Inovador",
+          "Confiável"
+        ],
+        "negative": [
+          "Abaixo do esperado",
+          "Instável",
+          "Básico",
+          "Incompleto"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Por quê você deu essa nota?",
+        "placeholder": "Seus comentários nos ajudam a entender os pontos fortes e a melhorar."
+      }
+    },
+    {
+      "key": "usabilidade_paineis",
+      "title": "Usabilidade dos Painéis",
+      "showEvaluation": true,
+      "evaluationType": "NPS(0-10)",
+      "likertQuestion": "Em uma escala de 0 (nada fácil) a 10 (muito fácil), quão fácil é utilizar os painéis e relatórios desenvolvidos?",
+      "showTags": true,
+      "adjectives": {
+        "positive": [
+          "Intuitivo",
+          "Claro",
+          "Rápido",
+          "Completo"
+        ],
+        "negative": [
+          "Confuso",
+          "Lento",
+          "Faltam dados",
+          "Poucos filtros"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "O que poderia ser melhorado na usabilidade?",
+        "placeholder": "Ex: Faltam filtros, os gráficos são difíceis de entender, a performance é lenta..."
+      }
+    },
+    {
+      "key": "comunicacao_suporte",
+      "title": "Comunicação e Suporte",
+      "showEvaluation": true,
+      "evaluationType": "Likert",
+      "likertQuestion": "Como você avalia a comunicação, agilidade e o suporte oferecido pela equipe?",
+      "showTags": true,
+      "adjectives": {
+        "positive": [
+          "Proativos",
+          "Atenciosos",
+          "Claros na comunicação",
+          "Rápidos no retorno"
+        ],
+        "negative": [
+          "Reativos",
+          "Distantes",
+          "Comunicação falha",
+          "Demora no retorno"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Tem alguma sugestão para melhorarmos nossa comunicação ou suporte?",
+        "placeholder": "Ex: Mais reuniões de status, um canal de contato mais direto, etc."
+      }
+    }
+  ]
+}

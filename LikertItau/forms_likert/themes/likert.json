@@ -1,0 +1,33 @@
+{
+  "formTitle": "Avalie a experiência",
+  "questions": [
+    {
+      "key": "avaliacao_geral_footer",
+      "title": "Sua Opinião é Importante",
+      "evaluationType": "Likert",
+      "likertQuestion": "O que você achou da experiência neste painel?",
+      "showTags": false,
+      "adjectives": {
+        "positive": [
+          "Usabilidade",
+          "Qualidade dos dados",
+          "Design e clareza visual",
+          "Performance",
+          "Relevância para o negócio"
+        ],
+        "negative": [
+          "Usabilidade",
+          "Qualidade dos dados",
+          "Design e clareza visual",
+          "Performance",
+          "Relevância para o negócio"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Por quê? ",
+        "placeholder": "Deixe um comentário "
+      }
+    }
+  ]
+}

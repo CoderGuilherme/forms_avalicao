@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Experiência - Footer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000D3C;
+            --background-color: transparent;
+            --form-background: #ffffff;
+            --text-color: black ;
+            --light-text-color: #7f8c8d;
+            --border-color: #dfe6e9;
+            --pill-bg: #ecf0f1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .footer-survey-container {
+            background-color: var(--form-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .survey-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .survey-header .title-group h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+        .survey-header .title-group p {
+            font-size: 14px;
+            color: var(--light-text-color);
+            margin: 0;
+        }
+        .survey-header .logo {
+            height: 35px;
+        }
+
+        .likert-inline {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .likert-inline input[type="radio"] { display: none; }
+        .likert-inline label {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .likert-inline label:hover {
+            background-color: #f8faff;
+        }
+        
+        .likert-inline .likert-icon {
+            height: 32px;
+            display: block;
+        }
+        .likert-inline .label-text {
+            font-size: 12px;
+            color: var(--light-text-color);
+            margin-top: 4px;
+            transition: color 0.2s ease, font-weight 0.2s ease;
+        }
+        .likert-inline input:checked + label {
+            transform: scale(1.15);
+        }
+        .likert-inline input:checked + label .label-text {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: black;
+        }
+        .category-pills { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin-bottom: 20px; }
+        .pill { background-color: var(--pill-bg); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 15px; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s ease-in-out; }
+        .pill:hover { border-color: var(--primary-color); }
+        .pill.active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+
+        .comment-submit-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .comment-submit-group textarea {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 45px;
+        }
+        .comment-submit-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 13, 60, 0.1);
+        }
+        .btn-submit { 
+            background-color: var(--primary-color); 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 12px 20px;
+            font-size: 14px; 
+            font-weight: 500; 
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover { background-color: #001f7c; }
+        .btn-submit:disabled { background-color: #555; cursor: not-allowed; opacity: 0.7; }
+
+        #thank-you-message {
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+        }
+        #thank-you-message h3 { font-size: 18px; color: var(--primary-color); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="footer-survey-container" id="survey-wrapper">
+        <form id="footer-survey">
+            <input type="hidden" id="dashboard-name-hidden" name="dashboard_name">
+            <input type="hidden" id="squad-name-hidden" name="squad_name">
+            <input type="hidden" id="rt-name-hidden" name="rt_name">
+            <input type="hidden" id="email-hidden" name="user_email">
+
+            <div class="survey-header">
+                <div class="title-group">
+                    <h3 id="survey-title">Avalie a experiência</h3>
+                    <p id="survey-subtitle">O que você achou da experiência neste painel?</p>
+                </div>
+                <img src="./imagem/logo_azul.svg" alt="Logo" class="logo">
+            </div>
+
+            <div class="likert-inline">
+                <input type="radio" id="likert-1" name="likert_score" value="Muito Ruim" required><label for="likert-1"><img src="./imagem/icon_muito_ruim.svg" alt="Muito Ruim" class="likert-icon"><span class="label-text">Muito Ruim</span></label>
+                <input type="radio" id="likert-2" name="likert_score" value="Ruim"><label for="likert-2"><img src="./imagem/icon_ruim.svg" alt="Ruim" class="likert-icon"><span class="label-text">Ruim</span></label>
+                <input type="radio" id="likert-3" name="likert_score" value="Regular"><label for="likert-3"><img src="./imagem/icon_regular.svg" alt="Regular" class="likert-icon"><span class="label-text">Regular</span></label>
+                <input type="radio" id="likert-4" name="likert_score" value="Bom"><label for="likert-4"><img src="./imagem/icon_bom.svg" alt="Bom" class="likert-icon"><span class="label-text">Bom</span></label>
+                <input type="radio" id="likert-5" name="likert_score" value="Muito Bom"><label for="likert-5"><img src="./imagem/icon_muito_bom.svg" alt="Muito Bom" class="likert-icon"><span class="label-text">Muito Bom</span></label>
+            </div>
+
+            <div class="form-group">
+                <label>Por quê ? (Selecione ao menos uma opção)</label>
+                <div class="category-pills">
+                    <div class="pill">Usabilidade</div>
+                    <div class="pill">Qualidade dos dados</div>
+                    <div class="pill">Design e clareza visual</div>
+                    <div class="pill">Performance</div>
+                    <div class="pill">Relevância para o negócio</div>
+                </div>
+            </div>
+
+            <div class="comment-submit-group">
+                <textarea id="comments" name="comments" placeholder="Deixe um comentário (opcional)..."></textarea>
+                <button type="submit" class="btn-submit" id="submit-btn">Enviar</button>
+            </div>
+        </form>
+
+        <div id="thank-you-message" style="display: none;">
+            <h3>Obrigado pelo seu feedback!</h3>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const surveyWrapper = document.getElementById('survey-wrapper');
+            const form = document.getElementById('footer-survey');
+            const thankYouMessage = document.getElementById('thank-you-message');
+            const pills = document.querySelectorAll('.pill');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            const dashboardNameHiddenInput = document.getElementById('dashboard-name-hidden');
+            const squadNameHiddenInput = document.getElementById('squad-name-hidden');
+            const rtNameHiddenInput = document.getElementById('rt-name-hidden');
+            const emailHiddenInput = document.getElementById('email-hidden');
+            const surveySubtitle = document.getElementById('survey-subtitle');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Captura o parâmetro 'painel' da URL
+            const dashboardNameFromURL = urlParams.get('painel');
+
+            // Variáveis para armazenar os valores finais
+            let finalDashboardName;
+            let finalSubtitle;
+
+            // Verifica se o parâmetro existe
+            if (dashboardNameFromURL) {
+            // SE EXISTIR: usa o nome do painel
+            finalDashboardName = decodeURIComponent(dashboardNameFromURL);
+            finalSubtitle = `O que você achou da experiência no painel ${finalDashboardName}?`;
+            } else {
+            // SE NÃO EXISTIR: usa os textos padrão
+            finalDashboardName = "Dashboard Padrão"; // Valor padrão para o dado enviado
+            finalSubtitle = "O que você achou da experiência neste painel?";
+            }
+
+            // Preenche os elementos na página com os valores definidos
+            dashboardNameHiddenInput.value = finalDashboardName;
+            surveySubtitle.textContent = finalSubtitle;
+            squadNameHiddenInput.value = urlParams.get('squad') ? decodeURIComponent(urlParams.get('squad')) : "Squad Não Informada";
+            rtNameHiddenInput.value = urlParams.get('rt') ? decodeURIComponent(urlParams.get('rt')) : "RT Não Informado";
+            if (urlParams.get('email')) {
+                emailHiddenInput.value = decodeURIComponent(urlParams.get('email'));
+            }
+
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    pill.classList.toggle('active');
+                });
+            });
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const selectedLikert = form.querySelector('input[name="likert_score"]:checked');
+                if (!selectedLikert) {
+                    alert('Por favor, selecione uma avaliação de "Muito Ruim" a "Muito Bom".');
+                    return;
+                }
+
+                const activePills = document.querySelectorAll('.pill.active');
+                if (activePills.length === 0) {
+                    alert('Por favor, selecione ao menos uma categoria no campo "Por quê?".');
+                    return;
+                }
+
+                const apiUrl = 'https://osjimi01h9.execute-api.us-east-2.amazonaws.com/prod/avaliacao';
+                const formData = new FormData(form);
+                const evaluationData = {};
+                for (let [key, value] of formData.entries()) {
+                    evaluationData[key] = value;
+                }
+                evaluationData.categories = Array.from(activePills).map(pill => pill.textContent);
+
+                console.log("Objeto JSON a ser enviado:", JSON.stringify(evaluationData, null, 2));
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviando...';
+                
+                // --- LÓGICA DE SUBMISSÃO E REINÍCIO ATUALIZADA ---
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(evaluationData),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // SUCESSO
+                    console.log('Sucesso:', data);
+                    
+                    // 1. Esconde o formulário e mostra a mensagem de "Obrigado"
+                    form.style.display = 'none';
+                    thankYouMessage.style.display = 'block';
+
+                    // 2. Agenda o reinício do formulário após 1 segundo
+                    setTimeout(() => {
+                        // Esconde a mensagem de "Obrigado"
+                        thankYouMessage.style.display = 'none';
+                        
+                        // Mostra o formulário novamente
+                        form.style.display = 'block';
+                        
+                        // Limpa todas as seleções e campos
+                        form.reset();
+                        
+                        // Remove a classe 'active' de todas as pills
+                        pills.forEach(pill => pill.classList.remove('active'));
+                        
+                        // Reabilita o botão de envio
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Enviar';
+                    }, 2000); // 1000 milissegundos = 1 segundo
+                })
+                .catch((error) => {
+                    // ERRO
+                    console.error('Erro ao enviar avaliação:', error);
+                    alert('Ocorreu um erro ao enviar sua avaliação. Por favor, tente novamente.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enviar';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

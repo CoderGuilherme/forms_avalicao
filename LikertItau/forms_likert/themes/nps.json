@@ -1,0 +1,21 @@
+{
+  "formTitle": "Pesquisa de Recomendação",
+  "questions": [
+    {
+      "key": "nps_tomada_decisao",
+      "title": "Net Promoter Score (NPS)",
+      "evaluationType": "NPS(0-10)",
+      "likertQuestion": "O quanto você indicaria esse painel para tomada de decisão?",
+      "showTags": false,
+      "adjectives": {
+        "positive": [],
+        "negative": []
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Qual o principal motivo para a sua nota? (opcional)",
+        "placeholder": "Deixe seu comentário para nos ajudar a melhorar..."
+      }
+    }
+  ]
+}

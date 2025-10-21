@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder | Final</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <aside id="sidebar" class="glass-effect"></aside>
+    <button id="toggleSidebar" title="Recolher menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
+    </button>
+    <main class="main-content">
+        <div class="view-switcher">
+            <button id="btn-show-preview" class="active">Preview</button>
+            <button id="btn-show-code">Ver Código</button>
+        </div>
+        <div class="view-wrapper">
+            <div id="preview-wrapper"></div>
+            <div id="code-view-wrapper" class="hidden">
+                <textarea id="code-editor"></textarea>
+                <button id="btn-copy-code">Copiar Código</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

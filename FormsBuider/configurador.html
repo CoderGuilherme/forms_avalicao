@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder | Final</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"  rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilo -->
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="glass-effect"></aside>
+
+
+    <!-- Botão para recolher menu -->
+    <button id="toggleSidebar" title="Recolher menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="1.5" 
+                d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+            ></path>
+        </svg>
+    </button>
+
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+        <div class="view-switcher">
+            <button id="btn-show-preview" class="active">Preview</button>
+            <button id="btn-show-code">Ver Código</button>
+        </div>
+
+        <div class="view-wrapper">
+            <div id="preview-wrapper"></div>
+
+            <div id="code-view-wrapper" class="hidden">
+                <textarea id="code-editor"></textarea>
+                <button id="btn-copy-code">Copiar Código</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script -->
+    <script src="./scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+{
+  "formTitle": "Avaliação Geral do Painel",
+  "questions": [
+    {
+      "key": "usabilidade_e_efetividade",
+      "title": "Usabilidade e Efetividade",
+      "evaluationType": "Likert",
+      "likertQuestion": "Como você avalia a facilidade e eficácia de uso do dashboard?",
+      "showTags": true,
+      "adjectives": {
+        "positive": ["Intuitivo", "Rápido", "Completo", "Simples", "Direto"],
+        "negative": ["Confuso", "Lento", "Complicado", "Frustrante", "Burocrático"]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Comentários (opcional)",
+        "placeholder": "Nos conte um pouco mais..."
+      }
+    },
+    {
+      "key": "qualidade_dos_dados",
+      "title": "Qualidade e Relevância dos Dados",
+      "evaluationType": "Likert",
+      "likertQuestion": "Como você avalia a confiança e relevância dos dados?",
+      "showTags": true,
+      "adjectives": {
+        "positive": ["Confiável", "Preciso", "Relevante", "Atualizado", "Acurado"],
+        "negative": ["Incorreto", "Desatualizado", "Incompleto", "Duvidoso", "Inconsistente"]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Comentários (opcional)",
+        "placeholder": "Senti falta de algum KPI, os números parecem corretos..."
+      }
+    },
+    {
+      "key": "design_e_clareza_visual",
+      "title": "Design e Clareza Visual",
+      "evaluationType": "Likert",
+      "likertQuestion": "Como você avalia a organização visual do dashboard?",
+      "showTags": true,
+      "adjectives": {
+        "positive": ["Agradável", "Limpo", "Organizado", "Moderno", "Claro"],
+        "negative": ["Poluído", "Confuso", "Desorganizado", "Cansativo", "Ultrapassado"]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Comentários (opcional)",
+        "placeholder": "As cores ajudam a entender, há muita informação na tela..."
+      }
+    },
+    {
+      "key": "performance",
+      "title": "Funcionalidade e Performance",
+      "evaluationType": "Likert",
+      "likertQuestion": "Quão satisfeito você está com a performance geral?",
+      "showTags": true,
+      "adjectives": {
+        "positive": ["Rápido", "Estável", "Responsivo", "Fluido", "Eficiente"],
+        "negative": ["Lento", "Instável", "Com Bugs", "Travado", "Frágil"]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Comentários (opcional)",
+        "placeholder": "Os filtros carregam rápido, a página travou uma vez..."
+      }
+    },
+    {
+      "key": "impacto_no_negocio",
+      "title": "Impacto no Negócio",
+      "evaluationType": "Likert",
+      "likertQuestion": "O quanto o dashboard auxilia em suas decisões?",
+      "showTags": true,
+      "adjectives": {
+        "positive": ["Esclarecedor", "Essencial", "Impactante", "Estratégico", "Valioso"],
+        "negative": ["Superficial", "Irrelevante", "Limitado", "Básico", "Desnecessário"]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Comentários (opcional)",
+        "placeholder": "Consigo tomar decisões com mais segurança agora..."
+      }
+    }
+  ]
+}

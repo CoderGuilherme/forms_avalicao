@@ -1,0 +1,116 @@
+{
+  "formTitle": "Avalie as Entregas da Nossa Squad",
+  "headerSubtitle": "Formulário de Avaliação",
+  "metadata": {
+    "autor": "Guilherme",
+    "rtName": "BI SEPJ",
+    "squadName": "SDPD",
+    "formsID": "bi_sepj_sdpd_avalie_as_entregas_da_nossa_squad"
+  },
+  "questions": [
+    {
+      "key": "como_voc_avalia_o_comprometimento_da_squad_",
+      "title": "Como Você Avalia o Comprometimento da Squad ?",
+      "showEvaluation": true,
+      "evaluationType": "Likert",
+      "likertQuestion": "Selecione as Tags",
+      "showTags": true,
+      "showPriorityTags": true,
+      "adjectives": {
+        "positive": [
+          "Bom",
+          "Rápido",
+          "Útil"
+        ],
+        "negative": [
+          "Ruim",
+          "Lento",
+          "Confuso"
+        ]
+      },
+      "commentSection": {
+        "visible": false,
+        "title": "",
+        "placeholder": ""
+      }
+    },
+    {
+      "key": "de_0__10_quanto_voc_indicaria_a_squad_de_sdpd_",
+      "title": "De 0 á 10 Quanto Você indicaria a Squad de SDPD ? ",
+      "showEvaluation": true,
+      "evaluationType": "NPS(0-10)",
+      "likertQuestion": "",
+      "showTags": false,
+      "showPriorityTags": true,
+      "adjectives": {
+        "positive": [
+          "Bom",
+          "Rápido",
+          "Útil"
+        ],
+        "negative": [
+          "Ruim",
+          "Lento",
+          "Confuso"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "",
+        "placeholder": "Deixe aqui seu Feadeback"
+      }
+    },
+    {
+      "key": "texto_livre_para_avaliar_a_squad",
+      "title": "Texto livre para avaliar a squad",
+      "showEvaluation": false,
+      "evaluationType": "Likert",
+      "likertQuestion": "",
+      "showTags": false,
+      "showPriorityTags": true,
+      "adjectives": {
+        "positive": [
+          "Bom",
+          "Rápido",
+          "Útil"
+        ],
+        "negative": [
+          "Ruim",
+          "Lento",
+          "Confuso"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "Avalie a Squad",
+        "placeholder": "Deixe aqui seus comentarios positivos ou negativos para que possamos melhorar ..."
+      }
+    },
+    {
+      "key": "de_0__5_o_quanto_nossas_entregas_tem_contribuido_para_a_sua_are_",
+      "title": "De 0 - 5 o Quanto nossas entregas tem contribuido para a sua areá ?",
+      "showEvaluation": true,
+      "evaluationType": "NPS(0-5)",
+      "likertQuestion": "",
+      "showTags": true,
+      "showPriorityTags": true,
+      "adjectives": {
+        "positive": [
+          "Bom",
+          "Rápido",
+          "Útil"
+        ],
+        "negative": [
+          "Ruim",
+          "Lento",
+          "Confuso"
+        ]
+      },
+      "commentSection": {
+        "visible": true,
+        "title": "",
+        "placeholder": ""
+      }
+    }
+  ]
+}

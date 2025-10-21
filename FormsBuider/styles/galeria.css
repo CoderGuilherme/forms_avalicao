@@ -1,0 +1,425 @@
+:root {
+    --main-bg: #f4f7f9;
+    --card-bg: #ffffff;
+    --primary-text: #212121;
+    --secondary-text: #757575;
+    --border-color: #e0e0e0;
+    --indigo-500: #000D3C;
+    --shadow-card: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Mantive a fonte do projeto */
+    background-color: var(--main-bg);
+    color: var(--primary-text);
+}
+
+/* --- Header e Filtros (sem alterações) --- */
+.main-header {
+    background-color: var(--card-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-brand .logo {
+    height: 32px;
+}
+
+.main-header h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-bar input,
+#search-input {
+    min-width: 300px;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+}
+
+.btn-new-form {
+    background-color: var(--indigo-500);
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-new-form:hover {
+    background-color: #4338ca;
+}
+
+.gallery-body {
+    display: flex;
+    height: calc(100vh - 77px);
+}
+
+#filter-panel {
+    width: 280px;
+    background-color: #f8fafc;
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+#filter-panel h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: flex;
+    /* Alterado de 'block' */
+    align-items: center;
+    /* Novo */
+    gap: 0.6rem;
+    /* Novo */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.filter-group label i {
+    /* Nova regra */
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+    width: 16px;
+    /* Garante alinhamento consistente */
+    text-align: center;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+#clear-filters {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background-color: var(--secondary-text);
+    color: white;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#clear-filters:hover {
+    background-color: #334155;
+}
+
+#gallery-main {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+#initial-prompt {
+    text-align: center;
+    padding-top: 5rem;
+    color: var(--secondary-text);
+}
+
+.hidden {
+    display: none !important;
+}
+    
+/* --- NOVOS ESTILOS PARA OS CARDS --- */
+#gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.card_container {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card_container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.link_icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--secondary-text);
+    cursor: pointer;
+    transition: color 0.2s;
+    font-size: 1.1rem;
+}
+
+.link_icon:hover {
+    color: var(--primary-text);
+}
+
+.conteudo_container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.titulo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.titulo_forms {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-text);
+}
+
+.info_container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--secondary-text);
+}
+
+.info_texto {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.status_container {
+    margin-top: 0.5rem;
+}
+
+.status_text {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-publicado .status_text {
+    background-color: #e8f5e9;
+    color: #28a745;
+}
+
+.status-rascunho .status_text {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+.control_container {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.25rem;
+}
+
+.control_container i {
+    color: var(--secondary-text);
+    cursor: pointer;
+    transition: color 0.2s;
+    font-size: 1.1rem;
+}
+
+.control_container i:hover {
+    color: var(--primary-text);
+}
+
+.control_container .fa-trash:hover {
+    color: #ef4444;
+}
+
+/* Adaptação para o card de "Criar Novo" */
+.card_container.new-card {
+    background-color: #fafbff;
+    border-style: dashed;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--indigo-500);
+}
+
+.new-card .plus-icon {
+    font-size: 3rem;
+    font-weight: 200;
+}
+
+.new-card h3 {
+    font-size: 1rem;
+}
+
+/* --- ESTILOS PARA MODAIS CUSTOMIZADOS --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que fique sobre outros elementos */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.modal-box {
+    background-color: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 450px; /* Largura máxima */
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-box {
+    transform: scale(1);
+}
+
+.modal-icon {
+    font-size: 3rem; /* Tamanho grande para o ícone */
+    margin-bottom: 1rem;
+}
+
+/* Cores dos ícones por tipo */
+.modal-icon.icon-info { color: #3b82f6; } /* Azul */
+.modal-icon.icon-success { color: #22c55e; } /* Verde */
+.modal-icon.icon-warning { color: #f97316; } /* Laranja */
+.modal-icon.icon-error { color: #ef4444; } /* Vermelho */
+.modal-icon.icon-confirm { color: #6366f1; } /* Indigo */
+
+.modal-message {
+    font-size: 1.1rem;
+    color: var(--primary-text);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center; /* Centraliza botões por padrão */
+    gap: 1rem; /* Espaço entre botões */
+    margin-top: 1.5rem;
+}
+
+/* Estilo genérico para botões do modal */
+.modal-buttons button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-family: 'Poppins', sans-serif;
+}
+.modal-buttons button:active {
+    transform: scale(0.98);
+}
+
+/* Botão Primário (OK, Confirmar, Salvar) */
+.modal-btn-primary {
+    background-color: var(--indigo-500);
+    color: white;
+}
+.modal-btn-primary:hover {
+    background-color: var(--indigo-600);
+}
+
+/* Botão Secundário (Cancelar, Fechar) */
+.modal-btn-secondary {
+    background-color: #e2e8f0; /* Cinza claro */
+    color: var(--slate-700);
+    border: 1px solid #cbd5e1;
+}
+.modal-btn-secondary:hover {
+    background-color: #cbd5e1;
+}
+
+/* Ajuste para modal de confirmação (botões mais espaçados) */
+.modal-confirm .modal-buttons {
+    justify-content: space-evenly; /* Espaça mais os botões de confirmação */
+}
+
+
+
+/* --- ESTILOS PARA ÍCONE DE ABRIR LINK --- */
+.control_container a { /* Para remover sublinhado padrão do link */
+    text-decoration: none;
+    color: inherit; /* Herda a cor do ícone */
+}
+
+.control_container .fa-arrow-right-to-bracket {
+    /* Estilos são herdados de .control_container i */
+}
+
+.control_container .fa-arrow-right-to-bracket:hover {
+     color: #22c55e; /* Verde para indicar ação de abrir */
+}
+
+/* Estilos para o botão Publicar/Despublicar */
+.control_container .fa-eye:hover { color: #22c55e; } /* Publicar -> Verde */
+.control_container .fa-eye-slash:hover { color: #f97316; } /* Despublicar -> Laranja */
