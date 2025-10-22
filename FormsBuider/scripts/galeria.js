@@ -144,48 +144,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const API_ENDPOINT = 'https://clnbw9qle5.execute-api.us-east-2.amazonaws.com';
 
-    // --- Main Logic: Carrega os formulários automaticamente via API ---
+    // SUBSTITUA A FUNÇÃO initializeGallery() INTEIRA POR ESTA VERSÃO CORRIGIDA:
     async function initializeGallery() {
         try {
-            initialPrompt.innerHTML = '<p>Carregando formulários...</p>'; // Feedback inicial
-            galleryGrid.classList.add('hidden'); // Esconde a grade enquanto carrega
+            initialPrompt.innerHTML = '<p>Carregando formulários...</p>'; 
+            galleryGrid.classList.add('hidden'); 
 
-            const response = await fetch(API_ENDPOINT + '/forms'); // Chama a API para listar
+            const response = await fetch(API_ENDPOINT + '/forms'); 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: response.statusText }));
                 throw new Error(`Erro ${response.status} ao buscar formulários: ${errorData.error || response.statusText}`);
             }
             
-            const formsMetadata = await response.json(); // API retorna a lista formatada
+            const formsMetadata = await response.json(); 
 
             // Transforma os metadados no formato que a galeria espera
-            allForms = formsMetadata.map(item => ({
-                 id: item.formId, // Usa formId como id
-                 data: { // Mantém a estrutura 'data' esperada
-                     formTitle: item.formName,
-                     metadata: {
-                         squadName: item.squadName,
-                         rtName: item.rtName
-                     },
-                     questions: [{ evaluationType: item.evaluationType }] // Apenas o tipo para filtro
-                 },
-                 // Usa createdAt para ordenação/filtro, convertendo para timestamp
-                 lastModified: item.createdAt ? new Date(item.createdAt).getTime() : Date.now() 
-            }));
+            allForms = formsMetadata.map(item => {
+                // A API (listAllFormsFunction) retorna uma estrutura plana, 
+                // então lemos diretamente do 'item'.
+                return {
+                    id: item.formId,
+                    // O campo 'isPublished' é lido aqui, no nível superior
+                    isPublished: item.isPublished || false, // Garante que seja false se for null/undefined
+                    lastModified: item.createdAt ? new Date(item.createdAt).getTime() : Date.now(),
+                    data: { 
+                        formTitle: item.formName,
+                        metadata: {
+                            squadName: item.squadName, // Lido do nível superior do item
+                            rtName: item.rtName        // Lido do nível superior do item
+                        },
+                        // Lido do nível superior do item
+                        questions: [{ evaluationType: item.evaluationType }] 
+                    }
+                };
+            });
 
             if (allForms.length > 0) {
                 initialPrompt.classList.add('hidden');
                 galleryGrid.classList.remove('hidden');
                 populateFilters();
-                applyFilters(); // Renderiza a galeria com os dados
+                applyFilters(); 
             } else {
                 initialPrompt.innerHTML = '<p>Nenhum formulário encontrado. Clique em "Novo Formulário" para criar um!</p>';
-                galleryGrid.innerHTML = ''; // Limpa a grade se estiver vazia
-                 // Adiciona o card "Criar Novo"
-                const newCardHTML = `<div class="card_container new-card" onclick="window.location.href='configurador.html'"><div class="plus-icon">+</div><h3>Criar Novo Formulário</h3></div>`;
+                galleryGrid.innerHTML = ''; 
+                const newCardHTML = `<div class="card_container new-card" onclick="window.location.href='Configurador.html'"><div class="plus-icon">+</div><h3>Criar Novo Formulário</h3></div>`;
                 galleryGrid.insertAdjacentHTML('beforeend', newCardHTML);
                 galleryGrid.classList.remove('hidden');
-                populateFilters(); // Popula filtros mesmo vazio
+                populateFilters(); 
             }
 
         } catch (error) {

@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formHTML += `<div class="form-step" data-step="${index}"><h2>${titlePrefix}${stepConfig.title}</h2>${questionTextHTML}${evalHTML}${priorityHTML}${tagsHTML}${commentsHTML}</div>`;
             });
         }
-        formHTML += `</div><div class="form-step" id="thank-you-message"><img class="thank-you-image" src="./imagem/Final_forms.svg" alt="Concluído"><h2>Obrigado!</h2><p>Seu feedback foi recebido.</p></div><div class="navigation-buttons"><button type="button" class="btn-prev">Voltar</button><button type="button" class="btn btn-next">Próximo</button><button type="submit" class="btn btn-submit" style="display:none;">Enviar Avaliação</button></div></form></div>`;
+        formHTML += `</div><div class="form-step" id="thank-you-message"><img class="thank-you-image" src="./imagem/Final_forms.svg" alt="Concluído"><h2>Obrigado!</h2><p>Seu feedback foi recebido.</p></div><div class="navigation-buttons"><button type="button" class="btn-prev botao_voltar">Voltar</button><button type="button" class="btn btn-next">Próximo</button><button type="submit" class="btn btn-submit" style="display:none;">Enviar Avaliação</button></div></form></div>`;
         previewWrapper.innerHTML = formHTML;
         attachStandardPreviewListeners();
         renderPreviewStep();
@@ -697,25 +697,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     function attachSidebarListeners() {
         // Esta flag impede que os listeners sejam adicionados mais de uma vez
         if (sidebar.dataset.listenersAttached === 'true') return;
-
-        // --- MANIPULADORES DE INPUT/CHANGE (para digitação, seleção, etc.) ---
+        // CÓDIGO CORRIGIDO
         const handleInputChange = (target) => { 
-            const path = target.dataset.configPath;
-            if (!path) return; 
+            if (!target.dataset.configPath) return; 
 
+            // Define o valor (para checkbox ou outros)
             const value = target.type === 'checkbox' ? target.checked : target.value;
-            updateState(path, value); // Atualiza o objeto formConfig localmente
+            updateState(target.dataset.configPath, value); 
             
             // Se mudar o TIPO de avaliação ou o ESTILO do formulário, recarrega a sidebar
-            if (path.endsWith('.evaluationType') || path === 'formStyle') {
+            if (target.dataset.configPath.endsWith('.evaluationType') || target.dataset.configPath === 'formStyle') {
                 const uiState = captureUIState();
-                renderSidebarContent();
+                renderSidebarContent(); 
                 applyUIState(uiState);
+                updateViews(); // <-- ESTA LINHA FOI ADICIONADA AQUI para garantir que a UI seja atualizada depois da sidebar
             } else {
-                // Para outras mudanças, apenas atualiza as views (Preview, Código, FormsID)
-                updateViews();
+                updateViews(); // Atualiza as views caso o caminho de configuração não seja relacionado à avaliação ou estilo
             }
         };
+
         
         sidebar.addEventListener('change', (e) => { if (e.target.tagName === 'SELECT') handleInputChange(e.target); });
         sidebar.addEventListener('blur', (e) => { if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') handleInputChange(e.target); }, true);
@@ -916,26 +916,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         form.addEventListener('click', (e) => {
             const target = e.target;
-            if (target.matches('.adjective-pills .pill, .priority-pills .pill')) {
-                const key = target.classList.contains('priority-pill') ? `priority_${target.dataset.key}` : `tags_${target.dataset.key}`;
+
+            // LÓGICA SEPARADA PARA TAGS (ADJETIVOS)
+            if (target.classList.contains('pill') && !target.classList.contains('pill-placeholder') && target.closest('.adjective-pills')) {
+                const key = `tags_${target.dataset.key}`;
                 const value = target.textContent;
-                if (target.classList.contains('priority-pill')) { 
-                    if (target.classList.contains('active')) {
-                        target.classList.remove('active');
-                        delete previewData[key];
-                    } else {
-                        target.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-                        target.classList.add('active');
-                        previewData[key] = value;
-                    }
-                } else { 
-                    target.classList.toggle('active');
-                    if (!previewData[key]) previewData[key] = [];
-                    if (previewData[key].includes(value)) {
-                        previewData[key] = previewData[key].filter(t => t !== value);
-                    } else {
-                        previewData[key].push(value);
-                    }
+
+                target.classList.toggle('active'); // Múltipla seleção
+                
+                if (!previewData[key]) previewData[key] = [];
+                if (previewData[key].includes(value)) {
+                    previewData[key] = previewData[key].filter(t => t !== value);
+                } else {
+                    previewData[key].push(value);
+                }
+            }
+
+            // LÓGICA SEPARADA PARA PRIORIDADES (BACKLOG)
+            if (target.classList.contains('priority-pill')) {
+                const key = `priority_${target.dataset.key}`;
+                const value = target.textContent;
+
+                // Lógica de seleção única
+                if (target.classList.contains('active')) {
+                    // Se já está ativo, desmarca (seleção opcional)
+                    target.classList.remove('active');
+                    delete previewData[key];
+                } else {
+                    // Desmarca todos os OUTROS botões de prioridade nesse grupo
+                    target.parentElement.querySelectorAll('.priority-pill').forEach(p => p.classList.remove('active'));
+                    // Marca o botão clicado
+                    target.classList.add('active');
+                    previewData[key] = value; // Salva a seleção
                 }
             }
         });

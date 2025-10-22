@@ -99,6 +99,76 @@
         .thank-you-image { max-width: 200px; margin: 20px auto; display: block; }
         #thank-you-message h2 { color: var(--primary-color); font-size: 28px; }
         #loading-message { text-align: center; padding: 40px; }
+
+
+        /* --- ADICIONE ESTE BLOCO DENTRO DA SUA TAG <style> --- */
+
+        #preview-wrapper .priority-pills,
+        .priority-pills { /* Adiciona a classe base para o renderer */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding-bottom: 20px;
+        }
+
+        #preview-wrapper .priority-pill,
+        .priority-pill { /* Adiciona a classe base para o renderer */
+            border: 1px solid #dfe6e9;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #preview-wrapper .priority-pill.urgent,
+        .priority-pill.urgent {
+            border-color: #fca5a5;
+            background-color: #fef2f2;
+            color: #ef4444;
+        }
+        #preview-wrapper .priority-pill.high,
+        .priority-pill.high {
+            border-color: #fdba74;
+            background-color: #fff7ed;
+            color: #f97316;
+        }
+        #preview-wrapper .priority-pill.medium,
+        .priority-pill.medium {
+            border-color: #fde047;
+            background-color: #fefce8;
+            color: #eab308;
+        }
+        #preview-wrapper .priority-pill.low,
+        .priority-pill.low {
+            border-color: #93c5fd;
+            background-color: #eff6ff;
+            color: #3b82f6;
+        }
+
+        #preview-wrapper .priority-pill.active.urgent,
+        .priority-pill.active.urgent {
+            background-color: #ef4444;
+            color: white;
+        }
+        #preview-wrapper .priority-pill.active.high,
+        .priority-pill.active.high {
+            background-color: #f97316;
+            color: white;
+        }
+        #preview-wrapper .priority-pill.active.medium,
+        .priority-pill.active.medium {
+            background-color: #eab308;
+            color: white;
+        }
+        #preview-wrapper .priority-pill.active.low,
+        .priority-pill.active.low {
+            background-color: #3b82f6;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -189,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (type) {
             case 'NPS(0-5)': return createNPSHTML(questionConfig.key, 5);
             case 'NPS(0-10)': return createNPSHTML(questionConfig.key, 10);
-            case 'Backlog': return ''; // Backlog não tem escala de avaliação
+            case 'Backlog': return ''; 
             default: return createLikertHTML(questionConfig.key);
         }
     }

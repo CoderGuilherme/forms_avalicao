@@ -505,3 +505,35 @@ body.sidebar-collapsed #sidebar { transform: translateX(calc(-1 * var(--sidebar-
 .modal-confirm .modal-buttons {
     justify-content: space-evenly; /* Espaça mais os botões de confirmação */
 }
+
+
+#preview-wrapper .survey-container .botao_voltar {
+    /* Estilos que eram da classe .btn */
+    color: #ffffff; 
+    border: none; 
+    border-radius: 8px; 
+    padding: 12px 25px; 
+    font-size: 15px; 
+    font-weight: 500; 
+    font-family: 'Poppins', sans-serif; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.2s;
+
+    /* Estilos que eram da classe .btn-prev */
+    background-color: #bdc3c7; /* Cor cinza */
+}
+
+#preview-wrapper .survey-container .botao_voltar:hover { 
+    transform: translateY(-2px); 
+    background-color: #95a5a6; /* Cor cinza mais escura */
+}
+
+/* Garante que os outros botões não sejam afetados */
+#preview-wrapper .survey-container .btn-next,
+#preview-wrapper .survey-container .btn-submit {
+     /* (Eles devem manter os estilos .btn, .btn-next, .btn-submit) */
+     /* Se eles também perderam o estilo, você precisará de regras para eles também. */
+}
+
+
+
